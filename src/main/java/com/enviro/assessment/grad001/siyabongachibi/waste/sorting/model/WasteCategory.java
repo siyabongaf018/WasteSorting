@@ -1,14 +1,14 @@
 package com.enviro.assessment.grad001.siyabongachibi.waste.sorting.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -20,13 +20,18 @@ public class WasteCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Size(min = 2, max = 100)
+    @Column(unique = true)
     private String name;
 
-    @NotNull
-    @Size(min = 2, max = 500)
     private String description;
+
+    @OneToMany(mappedBy = "wasteCategory", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<DisposalGuidelines> disposalGuidelines;
+
+    @OneToMany(mappedBy = "wasteCategory", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<RecyclingTips> recyclingTips;
 
 }
 

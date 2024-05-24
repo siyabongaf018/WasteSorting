@@ -22,6 +22,7 @@ public class WasteCategoryController {
         List<WasteCategory> categories = wasteCategoryService.findAll();
         return ResponseEntity.ok(categories);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<WasteCategory> getWasteCategoryById(@PathVariable Long id) {
         WasteCategory category = wasteCategoryService.findById(id);
@@ -30,6 +31,7 @@ public class WasteCategoryController {
 
     @PostMapping
     public ResponseEntity<WasteCategory> createWasteCategory(@Valid @RequestBody WasteCategory category) {
+        System.out.println(category);
         WasteCategory createdCategory = wasteCategoryService.save(category);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
     }
