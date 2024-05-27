@@ -1,5 +1,7 @@
 package com.enviro.assessment.grad001.siyabongachibi.waste.sorting.controller;
 
+import com.enviro.assessment.grad001.siyabongachibi.waste.sorting.dtos.DisposalGuidelinesDTO;
+import com.enviro.assessment.grad001.siyabongachibi.waste.sorting.dtos.RecyclingTipsDTO;
 import com.enviro.assessment.grad001.siyabongachibi.waste.sorting.model.RecyclingTips;
 import com.enviro.assessment.grad001.siyabongachibi.waste.sorting.service.RecyclingTipsService;
 import jakarta.validation.Valid;
@@ -20,26 +22,26 @@ public class RecyclingTipsController {
     private final RecyclingTipsService recyclingTipsService;
 
     @GetMapping
-    public ResponseEntity<List<RecyclingTips>> getAllRecyclingTips() {
-        List<RecyclingTips> tips = recyclingTipsService.findAll();
+    public ResponseEntity<List<RecyclingTipsDTO>> getAllRecyclingTips() {
+        List<RecyclingTipsDTO> tips = recyclingTipsService.findAll();
         return ResponseEntity.ok(tips);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RecyclingTips> getRecyclingTipById(@PathVariable Long id) {
-        RecyclingTips tip = recyclingTipsService.findById(id);
+    public ResponseEntity<RecyclingTipsDTO> getRecyclingTipById(@PathVariable Long id) {
+        RecyclingTipsDTO tip = recyclingTipsService.findById(id);
         return ResponseEntity.ok(tip);
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<RecyclingTips> createRecyclingTip(@PathVariable Long id,@Valid @RequestBody RecyclingTips tip) {
-        RecyclingTips createdTip = recyclingTipsService.save(id, tip);
+    public ResponseEntity<RecyclingTipsDTO> createRecyclingTip(@PathVariable Long id,@Valid @RequestBody RecyclingTipsDTO tip) {
+        RecyclingTipsDTO createdTip = recyclingTipsService.save(id, tip);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTip);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RecyclingTips> updateRecyclingTip(@PathVariable Long id, @Valid @RequestBody RecyclingTips tip) {
-        RecyclingTips updatedTip = recyclingTipsService.update(id, tip);
+    public ResponseEntity<RecyclingTipsDTO> updateRecyclingTip(@PathVariable Long id, @Valid @RequestBody RecyclingTipsDTO tip) {
+        RecyclingTipsDTO updatedTip = recyclingTipsService.update(id, tip);
         return ResponseEntity.ok(updatedTip);
     }
 
@@ -47,5 +49,11 @@ public class RecyclingTipsController {
     public ResponseEntity<Void> deleteRecyclingTip(@PathVariable Long id) {
         recyclingTipsService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/recycling-tips/{id}")
+    public ResponseEntity<List<RecyclingTipsDTO>> getAllRecyclingTipsByCategoryId(@PathVariable Long id) {
+        List<RecyclingTipsDTO> guidelines = recyclingTipsService.findRecyclingTipsByWasteCategoryId(id);
+        return ResponseEntity.ok(guidelines);
     }
 }
